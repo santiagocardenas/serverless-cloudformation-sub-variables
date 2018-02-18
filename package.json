@@ -1,0 +1,29 @@
+{
+  "name": "serverless-cloudformation-sub-variables",
+  "version": "0.1.0",
+  "description": "Serverless framework plugin for easily supporting AWS CloudFormation Sub function variables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiagocardenas/serverless-cloudformation-sub-variables.git"
+  },
+  "keywords": [
+    "serverless",
+    "framework",
+    "plugin",
+    "aws",
+    "cloudformation",
+    "cfn",
+    "sub",
+    "variables"
+  ],
+  "author": "Santiago Cardenas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/santiagocardenas/serverless-cloudformation-sub-variables/issues"
+  },
+  "homepage": "https://github.com/santiagocardenas/serverless-cloudformation-sub-variables#readme"
+}
