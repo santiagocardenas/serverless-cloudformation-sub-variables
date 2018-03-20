@@ -9,12 +9,13 @@ This includes:
 * Resource attributes e.g. `${SomeResource.Attribute}`
 * Pseudo parameters e.g. `${AWS::Region}`
 * Literal variables e.g. `${!LiteralVariable}`
+* Sub functions with key-value maps
 
 The trick is to use `#{Something}` instead of `${Something}` in your `serverless.yml`.
 
 The plugin, during the package command, converts all the Sub function variables after the serverless variables are referenced and resolved, but before the CloudFormation template is packaged.
 
-As part of the conversion, the `Fn::Sub` wrapper is also added to the string. That is, something like `#{Foo}-Bar-#{AWS::Region}` is converted to `{"Fn::Sub": "${Foo}-Bar-${AWS::Region}"}`.
+As part of the conversion, the `Fn::Sub` wrapper is also added to the string. That is, something like `#{Foo}-Bar-#{AWS::Region}` is converted to `{"Fn::Sub": "${Foo}-Bar-${AWS::Region}"}`. If `Fn::Sub` is already included in the direct parent node that contains the string with Sub function variables, then the `Fn::Sub` wrapper is not added (this is the case when declaring Sub functions with key-value maps or when you want to be more explicit in your `serverless.yml`).
 
 This means that you can turn something like this:
 ```yaml
@@ -25,6 +26,14 @@ plugins:
 ...
 resources:
 ...
+  Resources:
+    SomeResource:
+      Properties:
+        SomeProperty:
+          Fn::Sub:
+          - '#{CustomVariable}-XYZ'
+          - CustomVariable:
+              Fn::ImportValue: ABC-#{AWS::StackName}
   Outputs:
     MyBaseURL:
       Value: https://#{ApiGatewayRestApi}.execute-api.#{AWS::Region}.amazonaws.com/${self:provider.stage}
@@ -36,6 +45,24 @@ resources:
 Into something like this:
 ```json
 ...
+  "Resources": {
+    "SomeResource": {
+      "Properties": {
+        "SomeProperty": {
+          "Fn::Sub": [
+            "${CustomVariable}-XYZ",
+            {
+              "CustomVariable": {
+                "Fn::ImportValue": {
+                  "Fn::Sub": "ABC-${AWS::StackName}"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
   "Outputs": {
     "MyBaseURL": {
       "Value": {
