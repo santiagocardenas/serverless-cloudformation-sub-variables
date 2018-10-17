@@ -13,6 +13,18 @@ class ServerlessAWSCloudFormationSubVariables {
             return '\u001B[33m' + message + '\u001B[39m';
         }
 
+        function isNull(node) {
+            return node === null;
+        }
+
+        function isUndefined(node) {
+            return node === undefined;
+        }
+
+        function isNil(node) {
+            return isNull(node) || isUndefined(node);
+        }
+
         function isArray(node) {
             return node.constructor == Array;
         }
@@ -35,6 +47,9 @@ class ServerlessAWSCloudFormationSubVariables {
 
         function recurseNode(node, subFunctionChild) {
             Object.keys(node).forEach((key) => {
+                if (isNil(node[key])) {
+                    return;
+                }
                 if (hasChildren(node[key])) {
                     recurseNode(node[key], isSubFunction(key) ? true : false)
                 }
