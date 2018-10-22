@@ -1,6 +1,6 @@
 {
   "name": "serverless-cloudformation-sub-variables",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Serverless framework plugin for easily supporting AWS CloudFormation Sub function variables",
   "main": "index.js",
   "scripts": {
