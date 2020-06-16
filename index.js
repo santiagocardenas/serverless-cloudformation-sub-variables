@@ -4,7 +4,7 @@ class ServerlessAWSCloudFormationSubVariables {
     constructor(serverless) {
       this.serverless = serverless;
       this.hooks = {
-        'aws:package:finalize:mergeCustomProviderResources': this.convertSubVariables.bind(this)
+        'after:aws:package:finalize:mergeCustomProviderResources': this.convertSubVariables.bind(this)
       }
     }
 
